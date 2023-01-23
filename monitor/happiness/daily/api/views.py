@@ -1,7 +1,7 @@
 from rest_framework.generics import CreateAPIView
 
 from rest_framework.permissions import IsAuthenticated
-from ..api.serializers import CheckInSerializer
+from .serializers import CheckInSerializer
 
 
 class CheckInCreateAPIView(CreateAPIView):

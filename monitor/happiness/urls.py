@@ -17,7 +17,8 @@ from django.contrib import admin
 from django.urls import path, re_path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-from .daily.api import views
+from .daily.api import views as daily_views
+from .analytics.api import views as analytics_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,7 +26,12 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     re_path(
         r'^daily/(?P<version>(v1))/api/$',
-        view=views.CheckInCreateAPIView.as_view(),
+        view=daily_views.CheckInCreateAPIView.as_view(),
         name='daily_rest_api'
+    ),
+    re_path(
+        r'^analytics/(?P<version>(v1))/api/$',
+        view=analytics_view.TeamListAPIView.as_view(),
+        name='analytics_rest_api'
     )
 ]

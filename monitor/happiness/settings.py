@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'happiness.team',
     'happiness.daily',
+    'happiness.analytics',
 ]
 
 MIDDLEWARE = [
