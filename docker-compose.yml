@@ -1,0 +1,38 @@
+version: '2'
+
+services:
+  api:
+    build:
+      context: ./monitor
+      dockerfile: ./Dockerfile
+    command: python manage.py runserver 0.0.0.0:9001
+    depends_on:
+      - db
+    volumes:
+      - ./monitor/happiness/:/app/happiness:Z
+    networks:
+      - happiness-backend-tier
+    env_file: common.env
+    ports:
+      - 9001:9001
+
+  db:
+    image: library/postgres:13-alpine
+    ports:
+      - 54320:5432
+    restart: unless-stopped
+    networks:
+      - happiness-backend-tier
+    volumes:
+      - happiness-db:/var/lib/postgresql
+    environment:
+      - POSTGRES_USER=d1g1t
+      - POSTGRES_PASSWORD=d1g1t
+
+networks:
+  happiness-backend-tier:
+    driver: bridge
+
+volumes:
+  happiness-db:
+    driver: local

@@ -11,8 +11,6 @@ D1g1t Backend Test Assignment
 
 ## Features
 
-
-
 ## Method
 
 The method chosen to measure Happiness
@@ -43,6 +41,53 @@ To install Docker Desktop on Windows Home, please follow
 the [instructions](https://docs.docker.com/docker-for-windows/install-windows-home/).
 
 ## Installation
+
+To clone the repository, run the following command
+
+```shell
+git clone https://github.com/ridiaz/d1g1t-backend-assignment.git
+```
+
+### How to run it?
+
+We are using shared folders to enable live code reloading. Without this, Docker Compose will not start:
+
+* Windows/MacOS: Add the cloned d1g1t-backend-assignment directory to Docker shared directories (Preferences -> Resources -> File
+  sharing)
+* Linux: No action is required, sharing is already enabled and memory for the Docker engine is not limited.
+
+#### Go to the cloned directory:
+
+```shell
+cd d1g1t-backend-assignment
+```
+
+#### Build the application:
+
+```shell
+docker-compose build
+```
+
+#### Apply Django migrations:
+
+```shell
+docker-compose run --rm api python3 manage.py migrate
+```
+
+#### Create superuser:
+
+```shell
+docker-compose run --rm api python3 manage.py createsuperuser
+```
+
+
+
+#### Run the application:
+```shell
+docker-compose up
+
+```
+
 
 ## Endpoints
 
