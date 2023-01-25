@@ -33,3 +33,6 @@ venv.bak/
 # Exported results file
 django-queries-results.html
 /.idea/
+/.pytest_cache/
+/.idea/
+/monitor/happiness/.pytest_cache/

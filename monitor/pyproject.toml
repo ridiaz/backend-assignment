@@ -12,6 +12,12 @@ djangorestframework = "^3.14.0"
 djangorestframework-simplejwt = "^5.2.2"
 dj-database-url = "^1.2.0"
 psycopg2 = "^2.9.5"
+pytest = "^7.2.1"
+pytest-django = "^4.5.2"
+pylint = "^2.15.10"
+pylint-django = "^2.5.3"
+pytest-django-queries = "^1.2.0"
+pytest-mock = "^3.10.0"
 
 
 [build-system]

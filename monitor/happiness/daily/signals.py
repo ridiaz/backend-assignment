@@ -9,8 +9,7 @@ from ..analytics.tasks import load_check_in
 
 @receiver(pre_save, sender=CheckIn)
 def validate_daily_check_in(signal, sender, instance, **kwargs):
-    # verify_same_day(instance.user)
-    pass
+    verify_same_day(instance.user)
 
 
 @receiver(post_save, sender=CheckIn)

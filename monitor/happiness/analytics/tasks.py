@@ -1,8 +1,11 @@
 import datetime
 
 from django.utils import dateparse
-from .models import DimensionTeam, DimensionDate, FactResponse, select_stats_from_authenticated_user, \
-    DimensionHappinessLevel
+from .models import (DimensionTeam,
+                     DimensionDate,
+                     FactResponse,
+                     DimensionHappinessLevel,
+                     LEVELS_OF_HAPPINESS)
 from ..team.models import Team
 
 
@@ -19,28 +22,21 @@ def get_or_create_dimension_happiness_level(level):
     return dim_happiness
 
 
-def get_or_create_dimension_happiness(score: int) -> DimensionHappinessLevel:
-    levels = ['Extremely happy',
-              'Happy',
-              'Slightly Happy',
-              'Neutral',
-              'Slightly Happy',
-              'Unhappy',
-              'Extremely unhappy']
+def get_or_create_dimension_happiness_by_score(score: int) -> DimensionHappinessLevel:
     if score > 30:
-        return get_or_create_dimension_happiness_level(level=levels[0])
+        return get_or_create_dimension_happiness_level(level=LEVELS_OF_HAPPINESS[0])
     if score > 25:
-        return get_or_create_dimension_happiness_level(level=levels[1])
+        return get_or_create_dimension_happiness_level(level=LEVELS_OF_HAPPINESS[1])
     if score > 21:
-        return get_or_create_dimension_happiness_level(level=levels[2])
+        return get_or_create_dimension_happiness_level(level=LEVELS_OF_HAPPINESS[2])
     if score == 20:
-        return get_or_create_dimension_happiness_level(level=levels[3])
+        return get_or_create_dimension_happiness_level(level=LEVELS_OF_HAPPINESS[3])
     if score > 14:
-        return get_or_create_dimension_happiness_level(level=levels[4])
+        return get_or_create_dimension_happiness_level(level=LEVELS_OF_HAPPINESS[4])
     if score > 9:
-        return get_or_create_dimension_happiness_level(level=levels[5])
+        return get_or_create_dimension_happiness_level(level=LEVELS_OF_HAPPINESS[5])
 
-    return get_or_create_dimension_happiness_level(level=levels[6])
+    return get_or_create_dimension_happiness_level(level=LEVELS_OF_HAPPINESS[6])
 
 
 def get_or_create_dimension_teams(user) -> list[DimensionTeam]:
@@ -49,7 +45,7 @@ def get_or_create_dimension_teams(user) -> list[DimensionTeam]:
     return dims
 
 
-def create_fact_response(dim_date: DimensionDate, dims_team: list[DimensionTeam], dim_happiness, score: int):
+def load_fact_table(dim_date: DimensionDate, dims_team: list[DimensionTeam], dim_happiness, score: int):
     fact_responses = []
     for dim_team in dims_team:
         fact_response = FactResponse(dim_date=dim_date, dim_team=dim_team, dim_happiness=dim_happiness, score=score)
@@ -62,5 +58,5 @@ def load_check_in(check_in):
     user = check_in.get('user')
     dim_date = get_or_create_dimension_date(date=check_in.get('created'))
     dims_team = get_or_create_dimension_teams(user=user)
-    dim_happiness = get_or_create_dimension_happiness(score=score)
-    create_fact_response(dim_date=dim_date, dims_team=dims_team, dim_happiness=dim_happiness, score=score)
+    dim_happiness = get_or_create_dimension_happiness_by_score(score=score)
+    load_fact_table(dim_date=dim_date, dims_team=dims_team, dim_happiness=dim_happiness, score=score)
