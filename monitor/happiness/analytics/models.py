@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import Count, Avg
+from django.utils.timezone import now
 
 from ..team.models import Team
 
@@ -36,25 +37,38 @@ class FactResponse(models.Model):
     dim_happiness = models.ForeignKey(DimensionHappinessLevel, on_delete=models.DO_NOTHING)
 
 
-def get_statistics_anonymous(date_start=None, date_end=None):
+
+def get_statistics_anonymous(date_start=now(), date_end=now()):
     team_statistics_list = [{
         'name': 'all teams'
     }]
     for team_statistics_item in team_statistics_list:
-        queryset = DimensionTeam.objects.filter(factresponse__dim_date__year=2023).annotate(
+        queryset = DimensionTeam.objects.filter(factresponse__dim_date__year=date_start.year).annotate(
             average_happiness=Avg('factresponse__score'))
         team_statistics_item['average_happiness'] = queryset[0].average_happiness
 
     return team_statistics_list
 
 
-def get_statistics(user, date_start=None, date_end=None):
+def get_statistics(user, date_start=now(), date_end=now()):
     teams = [team for team in Team.objects.filter(users__pk=user.id)]
 
+    team_statistics_list = build_team_statistics_list(teams)
+
+    for team_statistics_item in team_statistics_list:
+        queryset = DimensionTeam.objects.filter(name=team_statistics_item['name'],
+                                                factresponse__dim_date__year=date_start.year).annotate(
+            average_happiness=Avg('factresponse__score'))
+        team_statistics_item['average_happiness'] = queryset[0].average_happiness
+
+    return team_statistics_list
+
+
+def build_team_statistics_list(teams, date_start=now()):
     team_statistics_list = []
     for team in teams:
         queryset = DimensionHappinessLevel.objects.filter(level__in=LEVELS_OF_HAPPINESS,
-                                                          factresponse__dim_date__year=2023,
+                                                          factresponse__dim_date__year=date_start.year,
                                                           factresponse__dim_team__id=team.id).annotate(
             number_of_people=Count('factresponse__id'),
             average_happiness=Avg('factresponse__score'))
@@ -72,11 +86,4 @@ def get_statistics(user, date_start=None, date_end=None):
             team_statistics_item['team_statistics'] = team_statistics
 
         team_statistics_list.append(team_statistics_item)
-
-    for team_statistics_item in team_statistics_list:
-        queryset = DimensionTeam.objects.filter(name=team_statistics_item['name'],
-                                                factresponse__dim_date__year=2023).annotate(
-            average_happiness=Avg('factresponse__score'))
-        team_statistics_item['average_happiness'] = queryset[0].average_happiness
-
     return team_statistics_list

@@ -1,15 +1,44 @@
 # D1g1t Back-end Test Assignment
 
-D1g1t Backend Test Assignment
+<!-- TOC -->
+* [D1g1t Back-end Test Assignment](#d1g1t-back-end-test-assignment)
+  * [Assumptions](#assumptions)
+    * [Method](#method)
+    * [The levels of happiness have the following ranges:](#the-levels-of-happiness-have-the-following-ranges-)
+    * [High Level Solution Design](#high-level-solution-design)
+  * [Prerequisites](#prerequisites)
+  * [Installation](#installation)
+    * [How to run it?](#how-to-run-it)
+      * [Go to the cloned directory:](#go-to-the-cloned-directory-)
+      * [Build the application:](#build-the-application-)
+      * [Apply Django migrations:](#apply-django-migrations-)
+      * [Create superuser:](#create-superuser-)
+      * [Run the application:](#run-the-application-)
+  * [Tests](#tests)
+  * [Endpoints](#endpoints)
+    * [Authentication `/api/token/`](#authentication-apitoken)
+      * [Response](#response)
+    * [CREATE Daily Check-in `/daily/v1/api/`](#create-daily-check-in-dailyv1api)
+      * [The score is calculated by summing up the responses to the following questions/criteria:](#the-score-is-calculated-by-summing-up-the-responses-to-the-following-questionscriteria-)
+      * [The scale (responses):](#the-scale--responses--)
+      * [Example](#example)
+    * [GET Analytics `/analytics/v1/api/`](#get-analytics-analyticsv1api)
+    * [Authenticated User](#authenticated-user)
+      * [Response](#response-1)
+    * [Analytics (Anonymous User) `/analytics/v1/api/`](#analytics--anonymous-user--analyticsv1api)
+      * [Response](#response-2)
+  * [Improvements](#improvements)
+<!-- TOC -->
 
 ## Assumptions
 
 * The solution implemented in this assessment has not been optimized for a live production environment with thousands of
   transactions per minute.
 * The solution has not been implemented using Django async. Even though the progress done by the Django community sounds
-  promising, the performance improvements using this paradigm are still maturing compared to WSGI. Its use also depends
-  on the use case.
+  promising, the performance improvements are still maturing compared to sync wsgi.
 * Users can get statistical information over the course of one year.
+* Users can be members of more than one Team.
+* Users who are not members of a team won't be able to do a daily check-in
 
 ### Method
 
@@ -72,7 +101,8 @@ docker-compose build
 #### Apply Django migrations:
 
 ```shell
-docker-compose run --rm api python3 manage.py migrate
+docker-compose up db -d && sleep 3 && docker-compose run --rm api python3 manage.py migrate
+
 ```
 
 #### Create superuser:
@@ -92,6 +122,13 @@ docker-compose up
 ```
 
 Now you can access the Django web Admin on http://localhost:9001:/admin
+
+## Tests
+
+```shell
+docker-compose run --rm api python3 pytest
+
+```
 
 ## Endpoints
 
@@ -211,7 +248,13 @@ curl --request GET \
 
 ## Improvements
 
-* Add CACHE layer
+* Add cache layer
 * Remove signals
-* Implement task-queue (Celery) to handle the loading of the data to the Analytics DB
+* Implement task queue (i.e. Celery) to handle the loading of the data to the Analytics DB
+* Writing statistical/analytics calculations with Django ORM could be difficult, sometimes is better to write raw SQL
+  queries in order to take full advantage of the RDBMS engine
+* Add Db indexes
+* Add more type hints
+* Add more tests
+
 

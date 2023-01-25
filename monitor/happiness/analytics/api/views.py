@@ -9,11 +9,7 @@ class TeamListAPIView(APIView):
     serializer_class = TeamSerializer
 
     def get(self, request, version):
-        """
-        Return a list.
-        """
         if request.user.id is None:
-            print('Anonymous request')
             return Response(get_statistics_anonymous())
 
         return Response(get_statistics(user=request.user))
