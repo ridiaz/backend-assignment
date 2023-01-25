@@ -229,6 +229,8 @@ Returns the list of all user's team statistics
 
 ### Analytics (Anonymous User) `/analytics/v1/api/`
 
+Returns average happiness across all teams
+
 ```shell
 curl --request GET \
   --url http://localhost:9001/analytics/v1/api/
@@ -256,5 +258,7 @@ curl --request GET \
 * Add Db indexes
 * Add more type hints
 * Add more tests
+* Add logging
+* Add support of global exception handling in APIs
 
 
