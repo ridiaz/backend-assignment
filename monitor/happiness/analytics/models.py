@@ -37,7 +37,6 @@ class FactResponse(models.Model):
     dim_happiness = models.ForeignKey(DimensionHappinessLevel, on_delete=models.DO_NOTHING)
 
 
-
 def get_statistics_anonymous(date_start=now(), date_end=now()):
     team_statistics_list = [{
         'name': 'all teams'
@@ -45,7 +44,10 @@ def get_statistics_anonymous(date_start=now(), date_end=now()):
     for team_statistics_item in team_statistics_list:
         queryset = DimensionTeam.objects.filter(factresponse__dim_date__year=date_start.year).annotate(
             average_happiness=Avg('factresponse__score'))
-        team_statistics_item['average_happiness'] = queryset[0].average_happiness
+        if not queryset.exists():
+            team_statistics_item['average_happiness'] = 0
+        else:
+            team_statistics_item['average_happiness'] = queryset[0].average_happiness
 
     return team_statistics_list
 
