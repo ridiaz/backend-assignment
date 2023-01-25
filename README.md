@@ -4,23 +4,23 @@
 * [D1g1t Back-end Test Assignment](#d1g1t-back-end-test-assignment)
   * [Assumptions](#assumptions)
     * [Method](#method)
-    * [The levels of happiness have the following ranges:](#the-levels-of-happiness-have-the-following-ranges-)
+    * [The levels of happiness have the following ranges](#the-levels-of-happiness-have-the-following-ranges)
     * [High Level Solution Design](#high-level-solution-design)
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
     * [How to run it?](#how-to-run-it)
-      * [Go to the cloned directory:](#go-to-the-cloned-directory-)
-      * [Build the application:](#build-the-application-)
-      * [Apply Django migrations:](#apply-django-migrations-)
-      * [Create superuser:](#create-superuser-)
-      * [Run the application:](#run-the-application-)
+      * [Go to the cloned directory](#go-to-the-cloned-directory)
+      * [Build the application](#build-the-application)
+      * [Apply Django migrations](#apply-django-migrations)
+      * [Create superuser](#create-superuser)
+      * [Run the application](#run-the-application)
   * [Tests](#tests)
   * [Endpoints](#endpoints)
     * [Authentication `/api/token/`](#authentication-apitoken)
       * [Response](#response)
     * [CREATE Daily Check-in `/daily/v1/api/`](#create-daily-check-in-dailyv1api)
-      * [The score is calculated by summing up the responses to the following questions/criteria:](#the-score-is-calculated-by-summing-up-the-responses-to-the-following-questionscriteria-)
-      * [The scale (responses):](#the-scale--responses--)
+      * [The score is calculated by summing up the responses to the following questions/criteria](#the-score-is-calculated-by-summing-up-the-responses-to-the-following-questionscriteria)
+      * [The scale (responses)](#the-scale--responses-)
       * [Example](#example)
     * [GET Analytics `/analytics/v1/api/`](#get-analytics-analyticsv1api)
     * [Authenticated User](#authenticated-user)
@@ -47,7 +47,7 @@ was [The Satisfaction with Life Scale (SWLS)](https://en.wikipedia.org/wiki/Life
 where 1 represents "strongly disagree," and 7 represents "strongly agree" for statements such as "In most ways, my life
 is close to my ideal."
 
-### The levels of happiness have the following ranges:
+### The levels of happiness have the following ranges
 
 * 31 - 35 Extremely happy
 * 26 - 30 happy
@@ -86,42 +86,42 @@ We are using shared folders to enable live code reloading. Without this, Docker 
   sharing)
 * Linux: No action is required, sharing is already enabled and memory for the Docker engine is not limited.
 
-#### Go to the cloned directory:
+#### Go to the cloned directory
 
 ```shell
 cd d1g1t-backend-assignment
 ```
 
-#### Build the application:
+#### Build the application
 
 ```shell
 docker-compose build
 ```
 
-#### Apply Django migrations:
+#### Apply Django migrations
 
 ```shell
 docker-compose up db -d && sleep 3 && docker-compose run --rm api python3 manage.py migrate
 
 ```
 
-#### Create superuser:
+#### Create superuser
 
-Create super user with the following command, to access the Django web Admin site
+Create super user with the following command, to access the Django web Admin
 
 ```shell
 docker-compose run --rm api python3 manage.py createsuperuser
 
 ```
 
-#### Run the application:
+#### Run the application
 
 ```shell
 docker-compose up
 
 ```
 
-Now you can access the Django web Admin on http://localhost:9001:/admin
+Now you can access the Django web Admin on http://localhost:9001/admin
 
 ## Tests
 
@@ -160,7 +160,7 @@ curl --request POST \
 
 ### CREATE Daily Check-in `/daily/v1/api/`
 
-#### The score is calculated by summing up the responses to the following questions/criteria:
+#### The score is calculated by summing up the responses to the following questions/criteria
 
 * __ In most ways my life is close to my ideal.
 * __ The conditions of my life are excellent.
@@ -168,7 +168,7 @@ curl --request POST \
 * __ So far I have gotten the important things I want in life.
 * __ If I could live my life over, I would change almost nothing.
 
-#### The scale (responses):
+#### The scale (responses)
 
 * 7 - Strongly agree
 * 6 - Agree
