@@ -79,7 +79,7 @@ git clone https://github.com/ridiaz/d1g1t-backend-assignment.git
 
 ### How to run it?
 
-We are using shared folders to enable live code reloading. Without this, Docker Compose will not start:
+To enable live code reloading. Without this, Docker Compose will not start:
 
 * Windows/MacOS: Add the cloned d1g1t-backend-assignment directory to Docker shared directories (Preferences ->
   Resources -> File
