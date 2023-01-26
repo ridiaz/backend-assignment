@@ -260,5 +260,6 @@ curl --request GET \
 * Add more tests
 * Add logging
 * Add support of global exception handling in APIs
+* Add rate limiting to the api endpoints
 
 
