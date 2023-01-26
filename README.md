@@ -253,13 +253,13 @@ curl --request GET \
 * Add cache layer
 * Remove signals
 * Implement task queue (i.e. Celery) to handle the loading of the data to the Analytics DB
-* Writing statistical/analytics calculations with Django ORM could be difficult, sometimes is better to write raw SQL
-  queries in order to take full advantage of the RDBMS engine
+* Writing statistical/analytics calculations with Django ORM could be difficult and inefficient (i.e. unnecessary calls to the database), sometimes is better to write raw SQL queries to take full advantage of the RDBMS engine
 * Add Db indexes
 * Add more type hints
 * Add more tests
 * Add logging
 * Add support of global exception handling in APIs
 * Add rate limiting to the api endpoints
+
 
 
